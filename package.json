@@ -16,7 +16,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "standard --verbose && react-scripts test",
     "eject": "react-scripts eject",
     "electron": "electron .",
     "electron-dev": "set ELECTRON_START_URL=http://localhost:3000 && electron ."
@@ -25,6 +25,11 @@
     "extends": [
       "react-app",
       "react-app/jest"
+    ]
+  },
+  "standard": {
+    "ignore": [
+      "*test.js"
     ]
   },
   "browserslist": {
