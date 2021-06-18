@@ -5,10 +5,16 @@ import 'halfmoon/css/halfmoon-variables.min.css'
 import 'halfmoon'
 import App from './components/App'
 import reportWebVitals from './reportWebVitals'
+import { ipcRenderer } from 'electron'
 
+let webTorrent = null
+ipcRenderer.on('client', client => {
+  webTorrent = client
+  console.log(client)
+})
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <App className='with-custom-webkit-scrollbars with-custom-css-scrollbars' data-dm-shortcut-enabled='true' data-set-preferred-mode-onload='true' webTorrent={webTorrent} />
   </React.StrictMode>,
   document.getElementById('root')
 )
