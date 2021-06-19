@@ -1,9 +1,21 @@
-const torrentList = torrents => {
-  const text = []
-  for (const torrent of torrents) {
-    text.push(<div>{torrent.name}</div>)
+import { Component } from 'react'
+
+class Torrent extends Component {
+  constructor (props) {
+    super(props)
+    this.torrent = this.props.torrent
+    this.state = this.torrent
+
+    this.torrent.on('download', this.handleUpdate.bind(this))
   }
-  return text
+
+  handleUpdate () {
+    this.setState(this.torrent)
+  }
+
+  render () {
+    return <div>{this.torrent.name} {this.torrent.progress} {this.torrent.length}</div>
+  }
 }
 
-export default torrentList
+export default Torrent

@@ -5,17 +5,14 @@ import 'halfmoon/css/halfmoon-variables.min.css'
 import 'halfmoon'
 import App from './components/App'
 import reportWebVitals from './reportWebVitals'
-import { ipcRenderer } from 'electron'
+import WebTorrent from 'webtorrent'
 
-let webTorrent = null
-ipcRenderer.on('client', client => {
-  webTorrent = client
-  console.log(client)
+const client = new WebTorrent()
+client.add('magnet:?xt=urn:btih:08ada5a7a6183aae1e09d831df6748d566095a10&dn=Sintel&tr=udp%3A%2F%2Fexplodie.org%3A6969&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969&tr=udp%3A%2F%2Ftracker.empire-js.us%3A1337&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com&ws=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2F&xs=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2Fsintel.torrent', torrent => {
+  console.log(torrent)
 })
 ReactDOM.render(
-  <React.StrictMode>
-    <App className='with-custom-webkit-scrollbars with-custom-css-scrollbars' data-dm-shortcut-enabled='true' data-set-preferred-mode-onload='true' webTorrent={webTorrent} />
-  </React.StrictMode>,
+  <App className='with-custom-webkit-scrollbars with-custom-css-scrollbars' data-dm-shortcut-enabled='true' data-set-preferred-mode-onload='true' client={client} />,
   document.getElementById('root')
 )
 

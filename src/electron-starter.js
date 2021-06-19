@@ -1,31 +1,26 @@
-const electron = require('electron')
-const WebTorrent = require('webtorrent')
-const { ipcMain } = require('electron')
-// Module to control application life.
-const app = electron.app
-// Module to create native browser window.
-const BrowserWindow = electron.BrowserWindow
+const { app } = require('electron')
+const { BrowserWindow } = require('glasstron')
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow
 
-const client = new WebTorrent()
-
 function createWindow () {
   // Create the browser window.
   mainWindow = new BrowserWindow({
     width: 800,
-    height: 600
+    height: 600,
+    frame: false
   })
+
+  mainWindow.blurType = 'blurbehind'
+  mainWindow.setBlur(true)
 
   // and load the index.html of the app.
   mainWindow.loadURL('http://localhost:3000')
 
   // Open the DevTools.
   mainWindow.webContents.openDevTools()
-
-  ipcMain.send('client', client)
 
   // Emitted when the window is closed.
   mainWindow.on('closed', function () {
@@ -35,6 +30,7 @@ function createWindow () {
     mainWindow = null
   })
 }
+app.commandLine.appendSwitch('enable-transparent-visuals')
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.

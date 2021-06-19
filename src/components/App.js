@@ -1,13 +1,14 @@
 import '../css/App.css'
-// import torrentList from './torrent.js'
+import TorrentList from './TorrentList.js'
 
-const App = webTorrent => {
+const App = element => {
   return (
     <div className='page-wrapper with-navbar'>
       <div className='sticky-alerts' />
       <nav className='navbar' />
-      <div className='content-wrapper' />
-
+      <div className='content-wrapper'>
+        <TorrentList torrents={element.client.torrents} />
+      </div>
     </div>
   )
 }
