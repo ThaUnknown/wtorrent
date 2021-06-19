@@ -11,7 +11,7 @@ function createWindow () {
     width: 800,
     height: 600,
     frame: false,
-    blurType: 'blurbehind',
+    blurType: 'acrylic',
     blur: true,
     show: false,
     vibrancy: 'fullscreen-ui',

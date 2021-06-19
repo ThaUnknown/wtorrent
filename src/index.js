@@ -1,19 +1,34 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import 'halfmoon/css/halfmoon-variables.min.css'
-import 'halfmoon'
-import './css/index.css'
 import 'material-design-icons/iconfont/material-icons.css'
+import 'halfmoon/css/halfmoon-variables.min.css'
+import './css/index.css'
 import App from './components/App'
 import reportWebVitals from './reportWebVitals'
 import WebTorrent from 'webtorrent'
 
 const client = new WebTorrent()
-client.add('magnet:?xt=urn:btih:08ada5a7a6183aae1e09d831df6748d566095a10&dn=Sintel&tr=udp%3A%2F%2Fexplodie.org%3A6969&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969&tr=udp%3A%2F%2Ftracker.empire-js.us%3A1337&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com&ws=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2F&xs=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2Fsintel.torrent', torrent => {
+client.add('https://webtorrent.io/torrents/tears-of-steel.torrent', torrent => {
   console.log(torrent)
 })
+function toggleDarkMode () {
+  if (document.body.classList.contains('dark-mode')) {
+    document.body.classList.remove('dark-mode')
+  } else {
+    document.body.classList.add('dark-mode')
+  }
+}
+document.addEventListener('keydown', e => {
+  if (e.shiftKey && e.which === 68) {
+    toggleDarkMode()
+    e.preventDefault()
+  }
+})
+
+document.body.classList.add('with-custom-webkit-scrollbars', 'dark-mode')
+document.body.setAttribute('data-dm-shortcut-enabled', 1)
 ReactDOM.render(
-  <App className='with-custom-webkit-scrollbars with-custom-css-scrollbars' data-dm-shortcut-enabled='true' data-set-preferred-mode-onload='true' client={client} />,
+  <App client={client} />,
   document.getElementById('root')
 )
 

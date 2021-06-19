@@ -1,13 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 :root {
   --navbar-height: 2.4rem;
-}
-
-.material-icons{
-  font-size: var(--base-font-size) !important
+  --lm-base-body-bg-color: #ffffff4d;
+  --dm-base-body-bg-color: #0000004d;
+  --sidebar-width: 21rem
 }
 
 body {
-  background: #ffffff1c;
   font-family: 'Roboto', sans-serif;
 }

@@ -1,10 +1,28 @@
 .draggable {
   -webkit-app-region: drag;
 }
+
 .window-controls {
   width: 2.4rem;
   height: 2.4rem;
   display: flex;
   align-items: center;
+  padding: 0 0.25rem;
   justify-content: center;
+}
+.window-controls.min:hover{
+  background: #6ff86f25;
+}
+.window-controls.max:hover{
+  background: #f8f66f25;
+}
+.window-controls.close:hover{
+  background: #f86f6f25;
+}
+.sidebar-bottom {
+  align-self: flex-end;
+}
+.torrent-stats span+span::before {
+  content: "•";
+  padding: 0 1rem;
 }
