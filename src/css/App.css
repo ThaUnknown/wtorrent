@@ -1,3 +1,10 @@
-.navbar {
+.draggable {
   -webkit-app-region: drag;
+}
+.window-controls {
+  width: 2.4rem;
+  height: 2.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

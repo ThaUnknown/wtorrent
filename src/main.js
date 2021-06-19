@@ -10,17 +10,26 @@ function createWindow () {
   mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
-    frame: false
+    frame: false,
+    blurType: 'blurbehind',
+    blur: true,
+    show: false,
+    vibrancy: 'fullscreen-ui',
+    webPreferences: {
+      nodeIntegration: true,
+      contextIsolation: false,
+      enableRemoteModule: true,
+      backgroundThrottling: false
+    }
   })
-
-  mainWindow.blurType = 'blurbehind'
-  mainWindow.setBlur(true)
 
   // and load the index.html of the app.
   mainWindow.loadURL('http://localhost:3000')
-
-  // Open the DevTools.
-  mainWindow.webContents.openDevTools()
+  mainWindow.once('ready-to-show', () => {
+    mainWindow.show()
+    // Open the DevTools.
+    mainWindow.webContents.openDevTools()
+  })
 
   // Emitted when the window is closed.
   mainWindow.on('closed', function () {
