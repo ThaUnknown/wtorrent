@@ -18,18 +18,27 @@ function toggleDarkMode () {
     document.body.classList.add('dark-mode')
   }
 }
+function toggleGlass () {
+  if (document.body.classList.contains('glassmorph')) {
+    document.body.classList.remove('glassmorph')
+  } else {
+    document.body.classList.add('glassmorph')
+  }
+}
 document.addEventListener('keydown', e => {
-  if (e.shiftKey && e.which === 68) {
+  if (e.key === 'D') {
     toggleDarkMode()
+    e.preventDefault()
+  } else if (e.key === 'G') {
+    toggleGlass()
     e.preventDefault()
   }
 })
 
-document.body.classList.add('with-custom-webkit-scrollbars', 'dark-mode')
-document.body.setAttribute('data-dm-shortcut-enabled', 1)
+document.body.classList.add('with-custom-webkit-scrollbars', 'dark-mode', 'glassmorph')
 ReactDOM.render(
   <App client={client} />,
-  document.getElementById('root')
+  document.body
 )
 
 // If you want to start measuring performance in your app, pass a function

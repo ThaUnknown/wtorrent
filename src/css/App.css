@@ -26,3 +26,6 @@
   content: "•";
   padding: 0 1rem;
 }
+.torrent-stats {
+  white-space: nowrap;
+}

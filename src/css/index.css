@@ -1,11 +1,26 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
 :root {
   --navbar-height: 2.4rem;
-  --lm-base-body-bg-color: #ffffff4d;
-  --dm-base-body-bg-color: #0000004d;
-  --sidebar-width: 21rem
+  --card-border-radius: .15rem;
+  --sidebar-width: 21rem;
+  --lm-base-body-bg-color: #ecf0f1;
+}
+
+.glassmorph {
+  --lm-base-body-bg-color: #ffffff55;
+  --white-bg-color: #ffffff55;
+  --gray-color-light: #ecf0f155;
+
+  --dm-base-body-bg-color: ##191c2055;
+  --dark-color-light: #25282c55;
+  --dark-color: #191c2055;
+  --dark-color-dark: #11141755;
 }
 
 body {
   font-family: 'Roboto', sans-serif;
+  scroll-behavior: smooth;
+  overscroll-behavior: none;
+  user-select: none;
 }

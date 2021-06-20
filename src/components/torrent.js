@@ -64,9 +64,14 @@ class Torrent extends Component {
 
   render () {
     return (
-      <div className='card bg-transparent'>
-        <h2 className='card-title font-weight-bold'>
-          {this.torrent.name}
+      <div className='card bg-dark-dm bg-white-lm torrent'>
+        <h2 className='card-title font-weight-bold d-flex flex-row justify-content-between'>
+          <div>
+            {this.torrent.name}
+          </div>
+          <button class='btn btn-square btn-link material-icons' type='button'>
+            more_horiz
+          </button>
         </h2>
         <div className='d-flex flex-row align-items-center torrent-stats'>
           <div class='material-icons font-size-20 pr-5 text-muted'>
