@@ -20,7 +20,7 @@ const Sidebar = element => {
         </a>
         <a href='#' className='sidebar-link sidebar-link-with-icon font-weight-bold'>
           <span className='sidebar-icon bg-transparent justify-content-start mr-5'>
-            <span class='material-icons font-size-20'>
+            <span className='material-icons font-size-20'>
               arrow_upward
             </span>
           </span>
@@ -28,7 +28,7 @@ const Sidebar = element => {
         </a>
         <a href='#' className='sidebar-link sidebar-link-with-icon font-weight-bold'>
           <span className='sidebar-icon bg-transparent justify-content-start mr-5'>
-            <span class='material-icons font-size-20'>
+            <span className='material-icons font-size-20'>
               done
             </span>
           </span>
@@ -36,7 +36,7 @@ const Sidebar = element => {
         </a>
         <a href='#' className='sidebar-link sidebar-link-with-icon font-weight-bold'>
           <span className='sidebar-icon bg-transparent justify-content-start mr-5'>
-            <span class='material-icons font-size-20'>
+            <span className='material-icons font-size-20'>
               pause
             </span>
           </span>
@@ -46,7 +46,7 @@ const Sidebar = element => {
       <div>
         <a href='#' className='sidebar-link sidebar-link-with-icon text-primary font-weight-bold'>
           <span className='sidebar-icon bg-transparent justify-content-start mr-5 text-primary'>
-            <span class='material-icons font-size-20'>
+            <span className='material-icons font-size-20'>
               add
             </span>
           </span>
@@ -54,7 +54,7 @@ const Sidebar = element => {
         </a>
         <a href='#' className='sidebar-link sidebar-link-with-icon font-weight-bold'>
           <span className='sidebar-icon bg-transparent justify-content-start mr-5'>
-            <span class='material-icons font-size-20'>
+            <span className='material-icons font-size-20'>
               tune
             </span>
           </span>

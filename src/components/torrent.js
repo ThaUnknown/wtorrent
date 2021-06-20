@@ -7,21 +7,20 @@ class Torrent extends Component {
     this.state = this.torrent
     this.units = [' B', ' kB', ' MB', ' GB', ' TB']
 
-    this.torrent.on('download', this.handleUpdate.bind(this))
-    this.torrent.on('upload', this.handleUpdate.bind(this))
-    this.torrent.on('done', this.handleUpdate.bind(this))
+    window.requestAnimationFrame(this.handleUpdate.bind(this))
   }
 
   handleUpdate () {
     this.setState(this.torrent)
+    setTimeout(() => window.requestAnimationFrame(this.handleUpdate.bind(this)), 250)
   }
 
   get torrentStatus () {
-    if (this.torrent.paused) {
-      if (this.torrent.done) return 'completed'
-      return 'paused'
+    if (this.torrent.paused) return 'paused'
+    if (this.torrent.done) {
+      if (this.torrent.numPeers === 0) return 'completed'
+      return 'seeding'
     }
-    if (this.torrent.done) return 'seeding'
     return 'downloading'
   }
 
@@ -35,15 +34,34 @@ class Torrent extends Component {
         return 'arrow_upward'
       case 'downloading':
         return 'arrow_downward'
+      default:
+        return 'sync'
+    }
+  }
+
+  get statusColor () {
+    switch (this.torrentStatus) {
+      case 'completed':
+        return 'success'
+      case 'paused':
+        return 'secondary'
+      case 'seeding':
+        return 'success'
+      case 'downloading':
+        return 'primary'
+      default:
+        return 'muted'
     }
   }
 
   get torrentSpeed () {
     if (this.torrentStatus === 'seeding') return this.torrent.uploadSpeed
     if (this.torrentStatus === 'downloading') return this.torrent.downloadSpeed
+    return 0
   }
 
   fastPrettyBytes (num) {
+    if (isNaN(num)) return '0 B'
     if (num < 1) return num + ' B'
     const exponent = Math.min(Math.floor(Math.log(num) / Math.log(1000)), this.units.length - 1)
     num = Number((num / Math.pow(1000, exponent)).toFixed(2))
@@ -69,16 +87,19 @@ class Torrent extends Component {
           <div>
             {this.torrent.name}
           </div>
-          <button class='btn btn-square btn-link material-icons' type='button'>
+          <button className='btn btn-square btn-link material-icons' type='button'>
             more_horiz
           </button>
         </h2>
-        <div className='d-flex flex-row align-items-center torrent-stats'>
-          <div class='material-icons font-size-20 pr-5 text-muted'>
+        <div className='d-flex flex-row align-items-center torrent-stats font-size-12'>
+          <div className={'material-icons pr-5 text-' + this.statusColor}>
             {this.statusIcon}
           </div>
           <span className='text-muted'>
             {this.fastPrettyBytes(this.torrentSpeed)}/s
+          </span>
+          <span className='text-muted'>
+            {this.torrent.numPeers} Peer{this.torrent.numPeers === 1 ? '' : 's'}
           </span>
           <span className='text-muted'>
             {parseInt(this.torrent.progress * 100)}%

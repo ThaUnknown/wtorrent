@@ -8,14 +8,14 @@
 }
 
 .glassmorph {
-  --lm-base-body-bg-color: #ffffff55;
-  --white-bg-color: #ffffff55;
-  --gray-color-light: #ecf0f155;
+  --lm-base-body-bg-color: #ffffff88;
+  --white-bg-color: #ffffff88;
+  --gray-color-light: #ecf0f188;
 
-  --dm-base-body-bg-color: ##191c2055;
-  --dark-color-light: #25282c55;
-  --dark-color: #191c2055;
-  --dark-color-dark: #11141755;
+  --dm-base-body-bg-color: #191c2088;
+  --dark-color-light: #25282c88;
+  --dark-color: #191c2088;
+  --dark-color-dark: #11141788;
 }
 
 body {
