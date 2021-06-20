@@ -18,7 +18,7 @@ class Torrent extends Component {
   get torrentStatus () {
     if (this.torrent.paused) return 'paused'
     if (this.torrent.done) {
-      if (this.torrent.numPeers === 0) return 'completed'
+      if (this.torrent.numPeers === 0 || this.torrent.uploadSpeed === 0) return 'completed'
       return 'seeding'
     }
     return 'downloading'
@@ -54,18 +54,68 @@ class Torrent extends Component {
     }
   }
 
-  get torrentSpeed () {
-    if (this.torrentStatus === 'seeding') return this.torrent.uploadSpeed
-    if (this.torrentStatus === 'downloading') return this.torrent.downloadSpeed
-    return 0
+  get speedElem () {
+    if (this.torrentStatus === 'seeding' && this.torrent.uploadSpeed !== 0) {
+      return (
+        <span className='text-muted'>
+          {this.fastPrettyBytes(this.torrent.uploadSpeed)}/s
+        </span>
+      )
+    }
+    if (this.torrentStatus === 'downloading') {
+      return (
+        <span className='text-muted'>
+          {this.fastPrettyBytes(this.torrent.downloadSpeed)}/s
+        </span>
+      )
+    }
+    return null
+  }
+
+  get timeElem () {
+    if (this.torrent.done) return null
+    return (
+      <span className='text-muted'>
+        {this.fastToTS(parseInt(this.torrent.timeRemaining / 1000))} remaining
+      </span>
+    )
+  }
+
+  get peersElem () {
+    if (!this.torrent.numPeers) return null
+    return (
+      <span className='text-muted'>
+        {this.torrent.numPeers} Peer{this.torrent.numPeers === 1 ? '' : 's'}
+      </span>
+    )
+  }
+
+  get fileSizeElem () {
+    if (this.torrent.done) {
+      return (
+        <span className='text-muted'>
+          {this.fastPrettyBytes(this.torrent.length)}
+        </span>
+      )
+    }
+    return (
+      <span className='text-muted'>
+        {this.fastPrettyBytes(this.torrent.received)} of {this.fastPrettyBytes(this.torrent.length)}
+      </span>
+    )
+  }
+
+  get progressElemColor () {
+    if (this.torrent.done) return 'bg-success'
+    if (this.torrent.paused) return 'bg-secondary'
+    return 'bg-primary'
   }
 
   fastPrettyBytes (num) {
     if (isNaN(num)) return '0 B'
     if (num < 1) return num + ' B'
     const exponent = Math.min(Math.floor(Math.log(num) / Math.log(1000)), this.units.length - 1)
-    num = Number((num / Math.pow(1000, exponent)).toFixed(2))
-    return num + this.units[exponent]
+    return Number((num / Math.pow(1000, exponent)).toFixed(2)) + this.units[exponent]
   }
 
   fastToTS (sec, full) {
@@ -82,7 +132,7 @@ class Torrent extends Component {
 
   render () {
     return (
-      <div className='card bg-dark-dm bg-white-lm torrent'>
+      <div className='card bg-dark-dm bg-white-lm position-relative'>
         <h2 className='card-title font-weight-bold d-flex flex-row justify-content-between'>
           <div>
             {this.torrent.name}
@@ -96,21 +146,14 @@ class Torrent extends Component {
             {this.statusIcon}
           </div>
           <span className='text-muted'>
-            {this.fastPrettyBytes(this.torrentSpeed)}/s
-          </span>
-          <span className='text-muted'>
-            {this.torrent.numPeers} Peer{this.torrent.numPeers === 1 ? '' : 's'}
-          </span>
-          <span className='text-muted'>
             {parseInt(this.torrent.progress * 100)}%
           </span>
-          <span className='text-muted'>
-            {this.fastPrettyBytes(this.torrent.received)} of {this.fastPrettyBytes(this.torrent.length)}
-          </span>
-          <span className='text-muted'>
-            {this.fastToTS(parseInt(this.torrent.timeRemaining / 1000))} remaining
-          </span>
+          {this.fileSizeElem}
+          {this.speedElem}
+          {this.peersElem}
+          {this.timeElem}
         </div>
+        <div className={this.progressElemColor + ' position-absolute bottom-0 left-0'} style={{ width: this.torrent.progress * 100 + '%', height: '1px' }} />
       </div>
     )
   }
