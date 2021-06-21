@@ -10,22 +10,37 @@
   padding: 0 0.25rem;
   justify-content: center;
 }
-.window-controls.min:hover{
-  background: #6ff86f25;
+
+.window-controls.min:hover {
+  background: #6ff86f50;
 }
-.window-controls.max:hover{
-  background: #f8f66f25;
+
+.window-controls.max:hover {
+  background: #f8f66f50;
 }
-.window-controls.close:hover{
-  background: #f86f6f25;
+
+.window-controls.close:hover {
+  background: #f86f6f50;
 }
+
 .sidebar-bottom {
   align-self: flex-end;
 }
+
 .torrent-stats span+span::before {
   content: "•";
   padding: 0 1rem;
 }
-.torrent-stats {
+
+.torrent-stats>span {
   white-space: nowrap;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.sidebar-link.selected {
+  border-left: 2px solid #1890ff !important;
+  background: #1890ff33 !important
 }

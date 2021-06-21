@@ -2,15 +2,11 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import 'material-design-icons/iconfont/material-icons.css'
 import 'halfmoon/css/halfmoon-variables.min.css'
+import halfmoon from 'halfmoon/js/halfmoon-module'
 import './css/index.css'
 import App from './components/App'
 import reportWebVitals from './reportWebVitals'
-import WebTorrent from 'webtorrent'
 
-const client = new WebTorrent()
-client.add('https://webtorrent.io/torrents/tears-of-steel.torrent', torrent => {
-  console.log(torrent)
-})
 function toggleDarkMode () {
   if (document.body.classList.contains('dark-mode')) {
     document.body.classList.remove('dark-mode')
@@ -37,9 +33,10 @@ document.addEventListener('keydown', e => {
 
 document.body.classList.add('with-custom-webkit-scrollbars', 'dark-mode', 'glassmorph')
 ReactDOM.render(
-  <App client={client} />,
+  <App />,
   document.body
 )
+halfmoon.onDOMContentLoaded()
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

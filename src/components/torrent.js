@@ -7,15 +7,36 @@ class Torrent extends Component {
     this.state = this.torrent
     this.units = [' B', ' kB', ' MB', ' GB', ' TB']
 
+    this.onUpdate = props.onUpdate
+    this.oldState = null
+    this.torrent.on('upload', () => {
+      if (this.torrent.done && this.oldState !== 'seeding') {
+        this.oldState = 'seeding'
+        this.onUpdate()
+      }
+    })
+  }
+
+  componentDidMount () {
     window.requestAnimationFrame(this.handleUpdate.bind(this))
   }
 
+  componentWillUnmount () {
+    this.setState = () => {}
+  }
+
   handleUpdate () {
+    if (this.oldState === 'seeding' && !this.torrent.uploadSpeed) {
+      this.oldState = 'completed'
+      this.onUpdate()
+      window.requestAnimationFrame(this.handleUpdate.bind(this))
+    }
     this.setState(this.torrent)
     setTimeout(() => window.requestAnimationFrame(this.handleUpdate.bind(this)), 250)
   }
 
   get torrentStatus () {
+    if (this.torrent.destroyed) return 'destroyed'
     if (this.torrent.paused) return 'paused'
     if (this.torrent.done) {
       if (this.torrent.numPeers === 0 || this.torrent.uploadSpeed === 0) return 'completed'
@@ -34,6 +55,8 @@ class Torrent extends Component {
         return 'arrow_upward'
       case 'downloading':
         return 'arrow_downward'
+      case 'destroyed':
+        return 'delete'
       default:
         return 'sync'
     }
@@ -49,13 +72,15 @@ class Torrent extends Component {
         return 'success'
       case 'downloading':
         return 'primary'
+      case 'destroyed':
+        return 'danger'
       default:
         return 'muted'
     }
   }
 
   get speedElem () {
-    if (this.torrentStatus === 'seeding' && this.torrent.uploadSpeed !== 0) {
+    if (this.torrentStatus === 'seeding' && this.torrent.uploadSpeed) {
       return (
         <span className='text-muted'>
           {this.fastPrettyBytes(this.torrent.uploadSpeed)}/s
@@ -105,9 +130,56 @@ class Torrent extends Component {
     )
   }
 
+  get pauseElement () {
+    if (this.torrent.paused) {
+      return (
+        <span className='px-10 sidebar-link sidebar-link-with-icon' onClick={this.handlePauseResume.bind(this)}>
+          <span className='sidebar-icon bg-transparent justify-content-start mr-0'>
+            <span className='material-icons font-size-16'>
+              play_arrow
+            </span>
+          </span>
+          Resume
+        </span>
+      )
+    }
+    return (
+      <span className='px-10 sidebar-link sidebar-link-with-icon' onClick={this.handlePauseResume.bind(this)}>
+        <span className='sidebar-icon bg-transparent justify-content-start mr-0'>
+          <span className='material-icons font-size-16'>
+            pause
+          </span>
+        </span>
+        Pause
+      </span>
+    )
+  }
+
+  handlePauseResume () {
+    if (this.torrent.paused) {
+      this.torrent.resume()
+    } else {
+      this.torrent.pause()
+    }
+    this.onUpdate()
+  }
+
+  handleRemove () {
+    this.torrent.destroy(() => {
+      this.onUpdate()
+    })
+  }
+
+  handleDelete () {
+    this.torrent.destroy({ destroyStore: true }, () => {
+      this.onUpdate()
+    })
+  }
+
   get progressElemColor () {
-    if (this.torrent.done) return 'bg-success'
+    if (this.torrent.destroyed) return 'bg-danger'
     if (this.torrent.paused) return 'bg-secondary'
+    if (this.torrent.done) return 'bg-success'
     return 'bg-primary'
   }
 
@@ -137,11 +209,40 @@ class Torrent extends Component {
           <div>
             {this.torrent.name}
           </div>
-          <button className='btn btn-square btn-link material-icons' type='button'>
-            more_horiz
-          </button>
+          <div className='dropdown'>
+            <button className={'btn btn-square btn-link material-icons shadow-none text-' + this.statusColor} data-toggle='dropdown' type='button' id={'more-' + this.torrent.infoHash} aria-haspopup='true' aria-expanded='false'>
+              more_horiz
+            </button>
+            <div className='dropdown-menu dropdown-menu-right bg-dark-dm bg-white-lm border font-weight-normal pointer font-size-12' aria-labelledby={'more-' + this.torrent.infoHash}>
+              {this.pauseElement}
+              <span className='px-10 sidebar-link sidebar-link-with-icon' onClick={this.handleRemove.bind(this)}>
+                <span className='sidebar-icon bg-transparent justify-content-start mr-0'>
+                  <span className='material-icons font-size-16'>
+                    remove
+                  </span>
+                </span>
+                Remove
+              </span>
+              <span className='px-10 sidebar-link sidebar-link-with-icon' onClick={this.handleDelete.bind(this)}>
+                <span className='sidebar-icon bg-transparent justify-content-start mr-0'>
+                  <span className='material-icons font-size-16'>
+                    delete
+                  </span>
+                </span>
+                Remove with files
+              </span>
+              <span className='px-10 sidebar-link sidebar-link-with-icon'>
+                <span className='sidebar-icon bg-transparent justify-content-start mr-0'>
+                  <span className='material-icons font-size-16'>
+                    info
+                  </span>
+                </span>
+                More information
+              </span>
+            </div>
+          </div>
         </h2>
-        <div className='d-flex flex-row align-items-center torrent-stats font-size-12'>
+        <div className='d-flex flex-row align-items-center flex-wrap torrent-stats font-size-12'>
           <div className={'material-icons pr-5 text-' + this.statusColor}>
             {this.statusIcon}
           </div>

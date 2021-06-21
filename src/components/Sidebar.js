@@ -1,69 +1,35 @@
-const Sidebar = element => {
-  return (
-    <div className='sidebar bg-transparent d-flex flex-column justify-content-between py-20 px-5 bg-dark-dm bg-white-lm'>
-      <div>
-        <a href='#' className='sidebar-link sidebar-link-with-icon font-weight-bold'>
-          <span className='sidebar-icon bg-transparent justify-content-start mr-5'>
-            <span className='material-icons font-size-20'>
-              toc
-            </span>
-          </span>
-          All
-        </a>
-        <a href='#' className='sidebar-link sidebar-link-with-icon font-weight-bold'>
-          <span className='sidebar-icon bg-transparent justify-content-start mr-5'>
-            <span className='material-icons font-size-20'>
-              arrow_downward
-            </span>
-          </span>
-          Downloading
-        </a>
-        <a href='#' className='sidebar-link sidebar-link-with-icon font-weight-bold'>
-          <span className='sidebar-icon bg-transparent justify-content-start mr-5'>
-            <span className='material-icons font-size-20'>
-              arrow_upward
-            </span>
-          </span>
-          Seeding
-        </a>
-        <a href='#' className='sidebar-link sidebar-link-with-icon font-weight-bold'>
-          <span className='sidebar-icon bg-transparent justify-content-start mr-5'>
-            <span className='material-icons font-size-20'>
-              done
-            </span>
-          </span>
-          Completed
-        </a>
-        <a href='#' className='sidebar-link sidebar-link-with-icon font-weight-bold'>
-          <span className='sidebar-icon bg-transparent justify-content-start mr-5'>
-            <span className='material-icons font-size-20'>
-              pause
-            </span>
-          </span>
-          Paused
-        </a>
-      </div>
-      <div>
-        <a href='#' className='sidebar-link sidebar-link-with-icon text-primary font-weight-bold'>
-          <span className='sidebar-icon bg-transparent justify-content-start mr-5 text-primary'>
-            <span className='material-icons font-size-20'>
-              add
-            </span>
-          </span>
-          Add Torrent
-        </a>
-        <a href='#' className='sidebar-link sidebar-link-with-icon font-weight-bold'>
-          <span className='sidebar-icon bg-transparent justify-content-start mr-5'>
-            <span className='material-icons font-size-20'>
-              tune
-            </span>
-          </span>
-          Settings
-        </a>
-      </div>
-    </div>
+import Button from './Button.js'
+import { Component } from 'react'
 
-  )
+class Sidebar extends Component {
+  constructor (props) {
+    super(props)
+    this.state = { value: 'All' }
+  }
+
+  onUpdate (state) {
+    console.log(state)
+    this.props.onUpdateState(state)
+    this.setState({ value: state })
+  }
+
+  render () {
+    return (
+      <div className='sidebar bg-transparent d-flex flex-column justify-content-between py-20 bg-dark-dm bg-white-lm border-right-0'>
+        <div>
+          <Button class={this.state.value === 'All' && 'selected'} icon='toc' label='All' onUpdate={this.onUpdate.bind(this)} />
+          <Button class={this.state.value === 'Downloading' && 'selected'} icon='arrow_downward' label='Downloading' onUpdate={this.onUpdate.bind(this)} />
+          <Button class={this.state.value === 'Seeding' && 'selected'} icon='arrow_upward' label='Seeding' onUpdate={this.onUpdate.bind(this)} />
+          <Button class={this.state.value === 'Completed' && 'selected'} icon='done' label='Completed' onUpdate={this.onUpdate.bind(this)} />
+          <Button class={this.state.value === 'Paused' && 'selected'} icon='pause' label='Paused' onUpdate={this.onUpdate.bind(this)} />
+        </div>
+        <div>
+          <Button icon='add' label='Add Torrent' class='text-primary' onUpdate={() => {}} />
+          <Button icon='tune' label='Settings' onUpdate={() => {}} />
+        </div>
+      </div>
+    )
+  }
 }
 
 export default Sidebar

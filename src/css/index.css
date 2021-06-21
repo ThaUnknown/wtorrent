@@ -3,8 +3,13 @@
 :root {
   --navbar-height: 2.4rem;
   --card-border-radius: .15rem;
+  --dropdown-menu-border-radius: .25rem;
   --sidebar-width: 21rem;
   --lm-base-body-bg-color: #ecf0f1;
+  --dm-border-color: #111111 !important;
+  --lm-border-color: #dbdbdb !important;
+  --dm-card-border-color: #111111 !important;
+  --lm-card-border-color: #dbdbdb !important;
 }
 
 .glassmorph {
