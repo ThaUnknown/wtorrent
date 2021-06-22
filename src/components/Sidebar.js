@@ -8,7 +8,6 @@ class Sidebar extends Component {
   }
 
   onUpdate (state) {
-    console.log(state)
     this.props.onUpdateState(state)
     this.setState({ value: state })
   }

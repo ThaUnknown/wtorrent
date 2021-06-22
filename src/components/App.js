@@ -1,5 +1,6 @@
 import '../css/App.css'
 import TorrentList from './TorrentList.js'
+import TorrentInfo from './TorrentInfo.js'
 import Sidebar from './Sidebar.js'
 import Navbar from './Navbar.js'
 import { Component } from 'react'
@@ -9,14 +10,20 @@ class App extends Component {
   constructor (props) {
     super(props)
     window.client = new WebTorrent()
-    window.client.add('https://webtorrent.io/torrents/tears-of-steel.torrent').on('done', this.onUpdate.bind(this))
+    window.client.add('https://webtorrent.io/torrents/tears-of-steel.torrent', { path: 'E:\\videos\\testing\\' }).on('done', this.onUpdate.bind(this))
     this.torrents = window.client.torrents
     this.filter = null
   }
 
   onUpdateState (filter) {
     this.filter = filter
+    this.selected = null
     this.onUpdate()
+  }
+
+  onSelectedTorrent (torrent) {
+    this.selected = torrent
+    this.forceUpdate()
   }
 
   onUpdate () {
@@ -46,11 +53,9 @@ class App extends Component {
         <div className='sticky-alerts' />
         <Navbar />
         <Sidebar onUpdateState={this.onUpdateState.bind(this)} />
-        <div className='content-wrapper border-top border-left'>
-          <div className='content'>
-            <TorrentList torrents={this.torrents} onUpdate={this.onUpdate.bind(this)} />
-          </div>
-          <div />
+        <div className='content-wrapper border-top border-left d-flex flex-column justify-content-between'>
+          <TorrentList torrents={this.torrents} onUpdate={this.onUpdate.bind(this)} onSelectedTorrent={this.onSelectedTorrent.bind(this)} />
+          {this.selected && <TorrentInfo selected={this.selected} onSelectedTorrent={this.onSelectedTorrent.bind(this)} />}
         </div>
       </div>
     )

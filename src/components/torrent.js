@@ -3,14 +3,13 @@ import { Component } from 'react'
 class Torrent extends Component {
   constructor (props) {
     super(props)
-    this.torrent = this.props.torrent
-    this.state = this.torrent
+    this.state = this.props.torrent
     this.units = [' B', ' kB', ' MB', ' GB', ' TB']
 
     this.onUpdate = props.onUpdate
     this.oldState = null
-    this.torrent.on('upload', () => {
-      if (this.torrent.done && this.oldState !== 'seeding') {
+    this.props.torrent.on('upload', () => {
+      if (this.props.torrent.done && this.oldState !== 'seeding') {
         this.oldState = 'seeding'
         this.onUpdate()
       }
@@ -26,20 +25,20 @@ class Torrent extends Component {
   }
 
   handleUpdate () {
-    if (this.oldState === 'seeding' && !this.torrent.uploadSpeed) {
+    if (this.oldState === 'seeding' && !this.props.torrent.uploadSpeed) {
       this.oldState = 'completed'
       this.onUpdate()
       window.requestAnimationFrame(this.handleUpdate.bind(this))
     }
-    this.setState(this.torrent)
+    this.setState(this.props.torrent)
     setTimeout(() => window.requestAnimationFrame(this.handleUpdate.bind(this)), 250)
   }
 
   get torrentStatus () {
-    if (this.torrent.destroyed) return 'destroyed'
-    if (this.torrent.paused) return 'paused'
-    if (this.torrent.done) {
-      if (this.torrent.numPeers === 0 || this.torrent.uploadSpeed === 0) return 'completed'
+    if (this.props.torrent.destroyed) return 'destroyed'
+    if (this.props.torrent.paused) return 'paused'
+    if (this.props.torrent.done) {
+      if (this.props.torrent.numPeers === 0 || this.props.torrent.uploadSpeed === 0) return 'completed'
       return 'seeding'
     }
     return 'downloading'
@@ -80,17 +79,17 @@ class Torrent extends Component {
   }
 
   get speedElem () {
-    if (this.torrentStatus === 'seeding' && this.torrent.uploadSpeed) {
+    if (this.torrentStatus === 'seeding' && this.props.torrent.uploadSpeed) {
       return (
         <span className='text-muted'>
-          {this.fastPrettyBytes(this.torrent.uploadSpeed)}/s
+          {this.fastPrettyBytes(this.props.torrent.uploadSpeed)}/s
         </span>
       )
     }
     if (this.torrentStatus === 'downloading') {
       return (
         <span className='text-muted'>
-          {this.fastPrettyBytes(this.torrent.downloadSpeed)}/s
+          {this.fastPrettyBytes(this.props.torrent.downloadSpeed)}/s
         </span>
       )
     }
@@ -98,40 +97,40 @@ class Torrent extends Component {
   }
 
   get timeElem () {
-    if (this.torrent.done) return null
+    if (this.props.torrent.done) return null
     return (
       <span className='text-muted'>
-        {this.fastToTS(parseInt(this.torrent.timeRemaining / 1000))} remaining
+        {this.fastToTS(parseInt(this.props.torrent.timeRemaining / 1000))} remaining
       </span>
     )
   }
 
   get peersElem () {
-    if (!this.torrent.numPeers) return null
+    if (!this.props.torrent.numPeers) return null
     return (
       <span className='text-muted'>
-        {this.torrent.numPeers} Peer{this.torrent.numPeers === 1 ? '' : 's'}
+        {this.props.torrent.numPeers} Peer{this.props.torrent.numPeers === 1 ? '' : 's'}
       </span>
     )
   }
 
   get fileSizeElem () {
-    if (this.torrent.done) {
+    if (this.props.torrent.done) {
       return (
         <span className='text-muted'>
-          {this.fastPrettyBytes(this.torrent.length)}
+          {this.fastPrettyBytes(this.props.torrent.length)}
         </span>
       )
     }
     return (
       <span className='text-muted'>
-        {this.fastPrettyBytes(this.torrent.received)} of {this.fastPrettyBytes(this.torrent.length)}
+        {this.fastPrettyBytes(this.props.torrent.received)} of {this.fastPrettyBytes(this.props.torrent.length)}
       </span>
     )
   }
 
   get pauseElement () {
-    if (this.torrent.paused) {
+    if (this.props.torrent.paused) {
       return (
         <span className='px-10 sidebar-link sidebar-link-with-icon' onClick={this.handlePauseResume.bind(this)}>
           <span className='sidebar-icon bg-transparent justify-content-start mr-0'>
@@ -156,30 +155,32 @@ class Torrent extends Component {
   }
 
   handlePauseResume () {
-    if (this.torrent.paused) {
-      this.torrent.resume()
+    if (this.props.torrent.paused) {
+      this.props.torrent.resume()
     } else {
-      this.torrent.pause()
+      this.props.torrent.pause()
     }
     this.onUpdate()
   }
 
   handleRemove () {
-    this.torrent.destroy(() => {
+    this.props.torrent.destroy(() => {
       this.onUpdate()
+      this.props.onSelectedTorrent(null)
     })
   }
 
   handleDelete () {
-    this.torrent.destroy({ destroyStore: true }, () => {
+    this.props.torrent.destroy({ destroyStore: true }, () => {
       this.onUpdate()
+      this.props.onSelectedTorrent(null)
     })
   }
 
   get progressElemColor () {
-    if (this.torrent.destroyed) return 'bg-danger'
-    if (this.torrent.paused) return 'bg-secondary'
-    if (this.torrent.done) return 'bg-success'
+    if (this.props.torrent.destroyed) return 'bg-danger'
+    if (this.props.torrent.paused) return 'bg-secondary'
+    if (this.props.torrent.done) return 'bg-success'
     return 'bg-primary'
   }
 
@@ -207,13 +208,13 @@ class Torrent extends Component {
       <div className='card bg-dark-dm bg-white-lm position-relative'>
         <h2 className='card-title font-weight-bold d-flex flex-row justify-content-between'>
           <div>
-            {this.torrent.name}
+            {this.props.torrent.name}
           </div>
           <div className='dropdown'>
-            <button className={'btn btn-square btn-link material-icons shadow-none text-' + this.statusColor} data-toggle='dropdown' type='button' id={'more-' + this.torrent.infoHash} aria-haspopup='true' aria-expanded='false'>
+            <button className={'btn btn-square btn-link material-icons shadow-none text-' + this.statusColor} data-toggle='dropdown' type='button' id={'more-' + this.props.torrent.infoHash} aria-haspopup='true' aria-expanded='false'>
               more_horiz
             </button>
-            <div className='dropdown-menu dropdown-menu-right bg-dark-dm bg-white-lm border font-weight-normal pointer font-size-12' aria-labelledby={'more-' + this.torrent.infoHash}>
+            <div className='dropdown-menu dropdown-menu-right bg-dark-dm bg-white-lm border font-weight-normal pointer font-size-12' aria-labelledby={'more-' + this.props.torrent.infoHash}>
               {this.pauseElement}
               <span className='px-10 sidebar-link sidebar-link-with-icon' onClick={this.handleRemove.bind(this)}>
                 <span className='sidebar-icon bg-transparent justify-content-start mr-0'>
@@ -231,7 +232,7 @@ class Torrent extends Component {
                 </span>
                 Remove with files
               </span>
-              <span className='px-10 sidebar-link sidebar-link-with-icon'>
+              <span className='px-10 sidebar-link sidebar-link-with-icon' onClick={() => this.props.onSelectedTorrent(this.props.torrent)}>
                 <span className='sidebar-icon bg-transparent justify-content-start mr-0'>
                   <span className='material-icons font-size-16'>
                     info
@@ -247,14 +248,14 @@ class Torrent extends Component {
             {this.statusIcon}
           </div>
           <span className='text-muted'>
-            {parseInt(this.torrent.progress * 100)}%
+            {parseInt(this.props.torrent.progress * 100)}%
           </span>
           {this.fileSizeElem}
           {this.speedElem}
           {this.peersElem}
           {this.timeElem}
         </div>
-        <div className={this.progressElemColor + ' position-absolute bottom-0 left-0'} style={{ width: this.torrent.progress * 100 + '%', height: '1px' }} />
+        <div className={this.progressElemColor + ' position-absolute bottom-0 left-0'} style={{ width: this.props.torrent.progress * 100 + '%', height: '1px' }} />
       </div>
     )
   }
