@@ -5716,6 +5716,14 @@ getpass@^0.1.1:
   dependencies:
     assert-plus "^1.0.0"
 
+glasstron@^0.0.7:
+  version "0.0.7"
+  resolved "https://registry.yarnpkg.com/glasstron/-/glasstron-0.0.7.tgz#d0f3e8344351bbcb89a39323282b4ddb06b03ba0"
+  integrity sha512-zeqfC0E153yBKWHB8ZBA5rT1o1dCCQcPECBryzWLX3uy6VTX3CUcy7kjk/4BlVztEIbpV2plEetpOxSAOe5cqw==
+  dependencies:
+    node-addon-api "^3.0.0"
+    x11 "^2.3.0"
+
 glob-parent@^3.1.0:
   version "3.1.0"
   resolved "https://registry.npmjs.org/glob-parent/-/glob-parent-3.1.0.tgz"
@@ -8159,6 +8167,11 @@ no-case@^3.0.4:
     lower-case "^2.0.2"
     tslib "^2.0.3"
 
+node-addon-api@^3.0.0:
+  version "3.2.1"
+  resolved "https://registry.yarnpkg.com/node-addon-api/-/node-addon-api-3.2.1.tgz#81325e0a2117789c0128dab65e7e38f07ceba161"
+  integrity sha512-mmcei9JghVNDYydghQmeDX8KoAm0FAiYyIcUt/N4nhyAipB17pllZQDOJD2fotxABnt4Mdz+dKTO7eftLg4d0A==
+
 node-forge@^0.10.0:
   version "0.10.0"
   resolved "https://registry.npmjs.org/node-forge/-/node-forge-0.10.0.tgz"
@@ -8500,6 +8513,11 @@ os-browserify@^0.3.0:
   version "0.3.0"
   resolved "https://registry.npmjs.org/os-browserify/-/os-browserify-0.3.0.tgz"
   integrity sha1-hUNzx/XCMVkU/Jv8a9gjj92h7Cc=
+
+os-homedir@^1.0.1:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/os-homedir/-/os-homedir-1.0.2.tgz#ffbc4988336e0e833de0c168c7ef152121aa7fb3"
+  integrity sha1-/7xJiDNuDoM94MFox+8VISGqf7M=
 
 p-cancelable@^1.0.0:
   version "1.1.0"
@@ -12639,6 +12657,13 @@ ws@^7.4.2, ws@^7.4.5:
   version "7.5.0"
   resolved "https://registry.yarnpkg.com/ws/-/ws-7.5.0.tgz#0033bafea031fb9df041b2026fc72a571ca44691"
   integrity sha512-6ezXvzOZupqKj4jUqbQ9tXuJNo+BR2gU8fFRk3XCP3e0G6WT414u5ELe6Y0vtp7kmSJ3F7YWObSNr1ESsgi4vw==
+
+x11@^2.3.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/x11/-/x11-2.3.0.tgz#bdaccedccdac2482fd560f0511e7bf2bd9e1dbf2"
+  integrity sha1-vazO3M2sJIL9Vg8FEee/K9nh2/I=
+  dependencies:
+    os-homedir "^1.0.1"
 
 xdg-basedir@^4.0.0:
   version "4.0.0"

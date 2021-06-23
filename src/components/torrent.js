@@ -1,10 +1,10 @@
 import { Component } from 'react'
+import { fastPrettyBytes, fastToTS } from './Util.js'
 
 class Torrent extends Component {
   constructor (props) {
     super(props)
     this.state = this.props.torrent
-    this.units = [' B', ' kB', ' MB', ' GB', ' TB']
 
     this.onUpdate = props.onUpdate
     this.oldState = null
@@ -82,14 +82,14 @@ class Torrent extends Component {
     if (this.torrentStatus === 'seeding' && this.props.torrent.uploadSpeed) {
       return (
         <span className='text-muted'>
-          {this.fastPrettyBytes(this.props.torrent.uploadSpeed)}/s
+          {fastPrettyBytes(this.props.torrent.uploadSpeed)}/s
         </span>
       )
     }
-    if (this.torrentStatus === 'downloading') {
+    if (this.torrentStatus === 'downloading' || this.torrentStatus === 'paused') {
       return (
         <span className='text-muted'>
-          {this.fastPrettyBytes(this.props.torrent.downloadSpeed)}/s
+          {fastPrettyBytes(this.props.torrent.downloadSpeed)}/s
         </span>
       )
     }
@@ -100,7 +100,7 @@ class Torrent extends Component {
     if (this.props.torrent.done) return null
     return (
       <span className='text-muted'>
-        {this.fastToTS(parseInt(this.props.torrent.timeRemaining / 1000))} remaining
+        {fastToTS(parseInt(this.props.torrent.timeRemaining / 1000))} remaining
       </span>
     )
   }
@@ -118,13 +118,13 @@ class Torrent extends Component {
     if (this.props.torrent.done) {
       return (
         <span className='text-muted'>
-          {this.fastPrettyBytes(this.props.torrent.length)}
+          {fastPrettyBytes(this.props.torrent.length)}
         </span>
       )
     }
     return (
       <span className='text-muted'>
-        {this.fastPrettyBytes(this.props.torrent.received)} of {this.fastPrettyBytes(this.props.torrent.length)}
+        {fastPrettyBytes(this.props.torrent.received)} of {fastPrettyBytes(this.props.torrent.length)}
       </span>
     )
   }
@@ -184,25 +184,6 @@ class Torrent extends Component {
     return 'bg-primary'
   }
 
-  fastPrettyBytes (num) {
-    if (isNaN(num)) return '0 B'
-    if (num < 1) return num + ' B'
-    const exponent = Math.min(Math.floor(Math.log(num) / Math.log(1000)), this.units.length - 1)
-    return Number((num / Math.pow(1000, exponent)).toFixed(2)) + this.units[exponent]
-  }
-
-  fastToTS (sec, full) {
-    if (isNaN(sec) || sec < 0) {
-      return full ? '0:00:00.00' : '00:00'
-    }
-    const hours = Math.floor(sec / 3600)
-    let minutes = Math.floor(sec / 60) - (hours * 60)
-    let seconds = full ? (sec % 60).toFixed(2) : Math.floor(sec % 60)
-    if (minutes < 10) minutes = '0' + minutes
-    if (seconds < 10) seconds = '0' + seconds
-    return (hours > 0 || full) ? hours + ':' + minutes + ':' + seconds : minutes + ':' + seconds
-  }
-
   render () {
     return (
       <div className='card bg-dark-dm bg-white-lm position-relative'>
@@ -210,7 +191,7 @@ class Torrent extends Component {
           <div>
             {this.props.torrent.name}
           </div>
-          <div className='dropdown'>
+          <div className='dropdown toggle-on-hover'>
             <button className={'btn btn-square btn-link material-icons shadow-none text-' + this.statusColor} data-toggle='dropdown' type='button' id={'more-' + this.props.torrent.infoHash} aria-haspopup='true' aria-expanded='false'>
               more_horiz
             </button>

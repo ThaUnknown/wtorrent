@@ -23,8 +23,8 @@ class Sidebar extends Component {
           <Button class={this.state.value === 'Paused' && 'selected'} icon='pause' label='Paused' onUpdate={this.onUpdate.bind(this)} />
         </div>
         <div>
-          <Button icon='add' label='Add Torrent' class='text-primary' onUpdate={() => {}} />
-          <Button icon='tune' label='Settings' onUpdate={() => {}} />
+          <Button icon='add' label='Add Torrent' class='text-primary' other={{ 'data-toggle': 'modal', 'data-target': 'modal-add' }} />
+          <Button icon='tune' label='Settings' />
         </div>
       </div>
     )

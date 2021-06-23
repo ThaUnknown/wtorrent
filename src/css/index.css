@@ -10,6 +10,7 @@
   --lm-border-color: #dbdbdb !important;
   --dm-card-border-color: #111111 !important;
   --lm-card-border-color: #dbdbdb !important;
+  --table-padding: 1rem .8rem;
 }
 
 .glassmorph {
