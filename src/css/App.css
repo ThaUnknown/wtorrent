@@ -39,13 +39,37 @@
 .pointer {
   cursor: pointer;
 }
+
 .sidebar-link.selected {
   border-left: 2px solid #1890ff !important;
   background: #1890ff33 !important
 }
+
 table {
   table-layout: fixed;
 }
+
+.table-auto {
+  table-layout: auto;
+}
+
 .file-names {
   display: none !important
+}
+
+.mh-half {
+  max-height: 50%;
+}
+
+.mh-three-quarter {
+  max-height: 75%;
+}
+::-webkit-inner-spin-button{
+  opacity: 1;
+  padding-top: 2rem;
+  margin-left: .4rem;
+  margin-right: -.5rem;
+}
+.dark-mode ::-webkit-inner-spin-button {
+  filter: invert(.84);
 }

@@ -55,7 +55,7 @@ class TorrentInfo extends Component {
   Files (props) {
     return (
       <div className='content my-5'>
-        <table className='table'>
+        <table className='table table-auto'>
           <thead>
             <tr>
               <th>Name</th>

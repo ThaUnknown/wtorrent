@@ -15,6 +15,7 @@ class App extends Component {
     window.addEventListener('beforeunload', () => {
       window.client.destroy()
     })
+    window.client.on('error', console.warn)
     this.torrents = window.client.torrents
     this.filter = null
   }
@@ -54,13 +55,15 @@ class App extends Component {
   render () {
     return (
       <div>
-        <AddTorrent />
+        <AddTorrent onUpdate={this.onUpdate.bind(this)} />
         <div className='page-wrapper with-navbar with-sidebar'>
           <div className='sticky-alerts' />
           <Navbar />
           <Sidebar onUpdateState={this.onUpdateState.bind(this)} />
           <div className='content-wrapper border-top border-left d-flex flex-column justify-content-between'>
-            <TorrentList torrents={this.torrents} onUpdate={this.onUpdate.bind(this)} onSelectedTorrent={this.onSelectedTorrent.bind(this)} />
+            <div className='overflow-x-auto overflow-y-scroll flex-grow-1'>
+              <TorrentList torrents={this.torrents} onUpdate={this.onUpdate.bind(this)} onSelectedTorrent={this.onSelectedTorrent.bind(this)} />
+            </div>
             <TorrentInfo selected={this.selected} onSelectedTorrent={this.onSelectedTorrent.bind(this)} />
           </div>
         </div>

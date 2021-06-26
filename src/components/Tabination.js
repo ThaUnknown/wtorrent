@@ -5,7 +5,7 @@ const TabinationContext = React.createContext()
 export function Tabination (props) {
   const { children } = props
 
-  const [current = 'Stats', setCurrent] = React.useState()
+  const [current = props.default, setCurrent] = React.useState()
 
   return (
     <TabinationContext.Provider value={[current, setCurrent]}>
