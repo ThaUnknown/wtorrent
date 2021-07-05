@@ -6,12 +6,13 @@ import Navbar from './Navbar.js'
 import { Component } from 'react'
 import AddTorrent from './AddTorrent.js'
 const WebTorrent = window.require('webtorrent')
+const path = window.require('path')
 
 class App extends Component {
   constructor (props) {
     super(props)
     window.client = new WebTorrent()
-    window.client.add('https://webtorrent.io/torrents/tears-of-steel.torrent', { path: 'E:\\videos\\testing\\' }).on('done', this.onUpdate.bind(this))
+    window.client.add('https://webtorrent.io/torrents/tears-of-steel.torrent', { path: path.resolve('E:\\videos\\testing') }).on('done', this.onUpdate.bind(this))
     window.addEventListener('beforeunload', () => {
       window.client.destroy()
     })

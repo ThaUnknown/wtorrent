@@ -65,7 +65,7 @@ class TorrentInfo extends Component {
             </tr>
           </thead>
           <tbody>
-            {props.torrent.files.map((file, index) => {
+            {props.torrent.files.sort((a, b) => b.length - a.length).map((file, index) => {
               return (
                 <tr key={index}>
                   <td>{file.name}</td>
@@ -122,17 +122,17 @@ class TorrentInfo extends Component {
     if (this.props.selected) {
       return (
         <div className='h-half'>
-          <Tabination>
+          <Tabination default='Stats'>
             <div className='d-flex flex-column h-full'>
               <div className='d-flex flex-row px-20 pt-5'>
                 <Tab id='Stats'>
                   Stats
                 </Tab>
                 <Tab id='Files'>
-                  Files
+                  Files {this.props.selected.files.length && `(${this.props.selected.files.length})`}
                 </Tab>
                 <Tab id='Peers'>
-                  Peers
+                  Peers {this.props.selected.wires.length && `(${this.props.selected.wires.length})`}
                 </Tab>
                 <div onClick={() => this.props.onSelectedTorrent(null)} className='pointer px-10 py-5 mx-5 ml-auto sidebar-link bg-dark-dm bg-white-lm'>
                   Close

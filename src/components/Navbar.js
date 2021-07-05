@@ -1,6 +1,5 @@
 const { remote } = global.require('electron')
 const window = remote.getCurrentWindow()
-
 const Navbar = element => {
   return (
     <nav className='navbar p-0 bg-dark-dm bg-white-lm border-bottom-0'>
